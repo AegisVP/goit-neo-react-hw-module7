@@ -1,10 +1,11 @@
 import css from './ContactForm.module.css';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { FaUser, FaPhoneAlt } from 'react-icons/fa';
+import { FaUser, FaPhoneAlt, FaSpinner } from 'react-icons/fa';
 import { IconContext } from 'react-icons';
-import { addContact } from '../../redux/contactsSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../redux/contactsOps';
+import { selectIsAdding } from '../../redux/selectors';
 
 const initialValues = { name: '', number: '' };
 const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{0,6}\)[ -]?)|([0-9]{0,4})[ -]?)*?[0-9]{2,4}[ -]?[0-9]{2,4}$/;
@@ -15,9 +16,11 @@ const validationSchema = Yup.object().shape({
 
 export default function ContactForm() {
   const dispatcher = useDispatch();
+  const isAdding = useSelector(selectIsAdding);
+
   function handleSubmit({ name, number }, { resetForm }) {
+    dispatcher(addContact({ name, number }));
     resetForm();
-    dispatcher(addContact(name, number));
   }
 
   return (
@@ -36,8 +39,8 @@ export default function ContactForm() {
             <ErrorMessage name="number" component="p" className={css.error} />
             <FaPhoneAlt />
           </label>
-          <button type="submit" className={css.btn}>
-            Add contact
+          <button type="submit" className={css.btn} disabled={isAdding}>
+            {isAdding ? <FaSpinner className={css.spinner} /> : 'Add contact'}
           </button>
         </IconContext.Provider>
       </Form>

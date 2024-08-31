@@ -35,3 +35,17 @@
   composes: card;
   padding: 10px;
 }
+
+.error {
+  margin: 10px auto;
+  color: red;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.subError {
+  margin: 0px auto 10px;
+  color: red;
+  font-weight: bold;
+  font-size: 16px;
+}

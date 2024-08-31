@@ -2,6 +2,8 @@
   margin: 0;
   padding: 20px;
   width: 100%;
+  min-width: 300px;
+  max-width: 500px;
 
   display: flex;
   flex-direction: row;
@@ -36,8 +38,25 @@
 }
 
 .btn {
+  width: 100px;
+  height: 40px;
   margin: 0;
-  padding: 10px 20px;
-  text-align: center;
-  vertical-align: middle;
+}
+
+.spinner {
+  color: black;
+  width: 20px;
+  height: 20px;
+  position: initial;
+
+  animation: 1s infinite spin linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

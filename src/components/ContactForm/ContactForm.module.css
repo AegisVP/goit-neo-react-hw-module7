@@ -40,6 +40,24 @@
   left: 10px;
 }
 
+.spinner {
+  color: black;
+  width: 20px;
+  height: 20px;
+  position: initial;
+
+  animation: 1s infinite spin linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .error {
   position: absolute;
   top: 5px;
@@ -56,6 +74,8 @@
 }
 
 .btn {
-  align-self: center;
-  padding: 5px 35px;
+  width: 150px;
+  height: 40px;
+  white-space: nowrap;
+  margin: 0 auto;
 }

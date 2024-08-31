@@ -1,14 +1,23 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import { selectContactsExist } from '../../redux/selectors';
+import { selectContactsExist, selectError } from '../../redux/selectors';
 import ContactForm from '../ContactForm/ContactForm';
 import SearchBox from '../SearchBox/SearchBox';
 import ContactList from '../ContactList/ContactList';
 import css from './App.module.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchContacts } from '../../redux/contactsOps';
+import { useEffect } from 'react';
 
 export default function App() {
+  const dispatch = useDispatch();
+
+  const error = useSelector(selectError);
   const contactsExist = useSelector(selectContactsExist);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, []);
 
   return (
     <div className={css.app}>
@@ -18,19 +27,22 @@ export default function App() {
         <ContactForm />
       </div>
 
-      {contactsExist ? (
-        <>
-          <div className={css.card}>
-            <SearchBox />
-          </div>
-
-          <div className={css.list}>
-            <ContactList />
-          </div>
-        </>
-      ) : (
-        <div className={css.card}>There are no contacts</div>
+      {error && (
+        <div className={css.card}>
+          <p className={css.error}>An error has occured</p>
+          <p className={css.subError}>{error}</p>
+        </div>
       )}
+
+      {contactsExist && (
+        <div className={css.card}>
+          <SearchBox />
+        </div>
+      )}
+
+      <div className={css.list}>
+        <ContactList />
+      </div>
 
       <ToastContainer
         position="top-right"

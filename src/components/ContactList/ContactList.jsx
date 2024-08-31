@@ -1,20 +1,17 @@
 import css from './ContactList.module.css';
 import Contact from '../Contact/Contact';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts, selectFilter } from '../../redux/selectors';
+import { useSelector } from 'react-redux';
+import { selectContactsExist, selectFilteredContacts, selectIsLoading } from '../../redux/selectors';
 
 export default function ContactList() {
-  const dispatcher = useDispatch();
-
-  const contacts = useSelector(selectContacts) || [];
-  const filterValue = useSelector(selectFilter) || '';
-
-  const filteredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filterValue.toLowerCase()));
-
-  console.log({ filteredContacts });
+  const contactsExist = useSelector(selectContactsExist);
+  const isLoading = useSelector(selectIsLoading);
+  const filteredContacts = useSelector(selectFilteredContacts);
 
   return (
-    <>
+    <div>
+      {isLoading && <p>Loading contacts...</p>}
+
       {filteredContacts.length > 0 ? (
         <ul className={css.list}>
           {filteredContacts.map(contact => (
@@ -22,8 +19,12 @@ export default function ContactList() {
           ))}
         </ul>
       ) : (
-        <p>No contacts found</p>
+        !isLoading && (
+          contactsExist ?
+            <div className={css.card}>No contacts found</div> :
+            <div className={css.card}>There are no contacts</div>
+        )
       )}
-    </>
+    </div>
   );
 }
